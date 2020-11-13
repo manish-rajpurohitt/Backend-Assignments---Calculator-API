@@ -16,8 +16,49 @@ app.use(bodyParser.json())
 app.get("/",(req,res)=>{
     res.status(200).send("Hello world!");
 });
-const minusTenLakh = -1000000;
-const plusTenLakh = 1000000;
+app.post("/add", (req,res) => {
+    let num1 = req.body.num1;
+    let num2 = req.body.num2;
+    if(parseFloat(num1) > 1000000 || parseFloat(num2) > 1000000){
+        res.send({
+            status: "Error",
+            message: "Overflow",
+            sum: undefined
+        });
+        return;
+    }
+    if(parseFloat(num2) < -1000000 || parseFloat(num1) < -1000000){
+        res.send({
+            status: "Error",
+            message: "Underflow",
+            sum: undefined
+        });
+        return;
+    }
+    if(!isNaN(parseFloat(num1))  && !isNaN(parseFloat(num1))) {
+        let sum = parseFloat(num1) + parseFloat(num2);
+        if(sum < 1000000) {
+            res.send({
+                status: "success",
+                message: "the sum of given two numbers",
+                sum: sum
+            });
+        }else{
+            res.send({
+                status: "Error",
+                message: "Overflow",
+                sum: undefined
+            });
+        }
+    }else if(isNaN(parseFloat(num1)) || isNaN(parseFloat(num1))){
+        res.send({
+            status: "failure",
+            message: "Invalid data types",
+            sum: undefined
+        });
+    }
+});
+
 app.post("/sub", (req,res) => {
     let num1 = req.body.num1;
     let num2 = req.body.num2;
